@@ -5,4 +5,6 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': '',
                 'git_url': 'https://github.com/doyu/boxrecipe',
                 'lib_path': 'boxrecipe'},
-  'syms': {}}
+  'syms': { 'boxrecipe.services': { 'boxrecipe.services.check_service': ('services.html#check_service', 'boxrecipe/services.py'),
+                                    'boxrecipe.services.service_site': ('services.html#service_site', 'boxrecipe/services.py'),
+                                    'boxrecipe.services.write_file_cmd': ('services.html#write_file_cmd', 'boxrecipe/services.py')}}}
