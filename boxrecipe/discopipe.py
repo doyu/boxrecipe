@@ -45,6 +45,9 @@ def discopipe_service(
         "useradd --create-home --shell /usr/sbin/nologin discopipe",
         "python3 -m venv /opt/discopipe",
         "/opt/discopipe/bin/pip install git+https://github.com/doyu/discopipe.git",
+        # the service user must exec the venv whatever umask the surrounding
+        # cloud-init script runs under (a leaked umask 077 bit us once)
+        "chmod -R a+rX /opt/discopipe",
         # runuser, not sudo: at early boot the clock can still be at the epoch, which
         # makes useradd's password age look expired and sudo's PAM refuses to run
         "runuser -u discopipe -- bash -c 'curl -fsSL https://claude.ai/install.sh | bash'",
