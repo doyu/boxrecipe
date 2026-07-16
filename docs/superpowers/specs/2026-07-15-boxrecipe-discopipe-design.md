@@ -133,8 +133,11 @@ Cloud-init pieces returned by the fragment function:
   git+https://github.com/doyu/discopipe.git` (unpinned, same policy as
   the hetznerinit dependency — Decision 5).
 - **claude CLI**: native installer run as the service user:
-  `sudo -u discopipe bash -c 'curl -fsSL https://claude.ai/install.sh | bash'`
-  → `/home/discopipe/.local/bin/claude`
+  `runuser -u discopipe -- bash -c 'curl -fsSL https://claude.ai/install.sh | bash'`
+  → `/home/discopipe/.local/bin/claude`. `runuser`, not `sudo`: at early
+  boot the clock can still be at the epoch, making the fresh user's
+  password age look expired, and sudo's PAM then refuses (hit on the
+  first live rebuild).
 - **secrets dir**: `mkdir -p /etc/discopipe` (root:root, mode 700) so
   the post-boot env-file install has a target.
 - **agent CWD**: create `/home/discopipe/agent` (owned by discopipe) and
