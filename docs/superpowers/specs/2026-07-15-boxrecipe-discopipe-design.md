@@ -20,9 +20,9 @@ mature, then get published by flipping a flag.
 3. **Bot identity**: migrate the existing bot — port the laptop's
    `~/.config/discopipe/env` values (same `DISCORD_TOKEN`, channel,
    user; `DISCOPIPE_CWD` changes to the box's agent dir and
-   `ANTHROPIC_API_KEY` is added); stop the laptop instance **before**
-   the box bot starts — two gateway sessions on one token would both
-   reply, duplicating every answer.
+   `ANTHROPIC_API_KEY` is added). The laptop instance is already
+   stopped, so no cutover overlap — two gateway sessions on one token
+   would both reply, duplicating every answer.
 4. **Install method**: baked into the cloud-init recipe (not post-boot
    manual install, not Docker) so the box stays rebuildable from
    recipe + one secret file.
@@ -32,8 +32,10 @@ mature, then get published by flipping a flag.
    - New nbdev repo **`boxrecipe`** owns the composition: SERVICES
      registry, per-service cloud-init fragments, `box_recipe()`, PEERS,
      and the live rebuild flow. Depends on hetznerinit via
-     `git+https://github.com/doyu/hetznerinit.git@<tag-or-SHA>`
-     (pinned; bumped deliberately so a rebuild is reproducible).
+     `git+https://github.com/doyu/hetznerinit.git` — deliberately
+     unpinned: both repos are owned here and evolve together, so
+     tracking HEAD keeps the composition consistent with the library
+     API instead of drifting behind a stale pin.
 6. **Dedicated non-sudo service user** (panel review): the login user
    `doyu` has passwordless sudo (`user_config()`), so running
    `claude -p --dangerously-skip-permissions` as `doyu` would make the
@@ -128,8 +130,8 @@ Cloud-init pieces returned by the fragment function:
   group, no SSH key; exists only to run the bot.
 - **venv install**:
   `python3 -m venv /opt/discopipe && /opt/discopipe/bin/pip install
-  'git+https://github.com/doyu/discopipe.git@<tag-or-SHA>'` (pinned so
-  a rebuild reproduces the same bot).
+  git+https://github.com/doyu/discopipe.git` (unpinned, same policy as
+  the hetznerinit dependency — Decision 5).
 - **claude CLI**: native installer run as the service user:
   `sudo -u discopipe bash -c 'curl -fsSL https://claude.ai/install.sh | bash'`
   → `/home/discopipe/.local/bin/claude`
@@ -182,10 +184,10 @@ rank as the GoDaddy DNS update, recorded in the hetzner-rebuild skill.
    the nbdev-tdd skill.
 4. Update the hetzner-rebuild skill: boxrecipe is the recipe home; add
    the env-file scp step.
-5. Rebuild the box → verify DNS → install the env file → **stop the
-   laptop bot first** (`systemctl --user stop/disable discopipe`; two
-   gateway sessions on one token would both reply) →
-   `systemctl start discopipe` on the box → E2E.
+5. Rebuild the box → verify DNS → install the env file →
+   `systemctl start discopipe` on the box → E2E. (The laptop bot is
+   already stopped — confirm `systemctl --user is-enabled discopipe`
+   reports disabled so it cannot come back on reboot.)
 
 ## Testing
 
