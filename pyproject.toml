@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "boxrecipe"
+dynamic = ["version"]
+description = "The doyu-box composition: SERVICES registry, per-service cloud-init fragments, box_recipe()"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{name = "Hiroshi Doyu", email = "hiroshi.doyu@ninjalabo.ai"}]
+keywords = ['nbdev']
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+]
+dependencies = [
+    "hetznerinit @ git+https://github.com/doyu/hetznerinit.git",
+]
+
+[project.urls]
+Repository = "https://github.com/doyu/boxrecipe"
+
+[project.entry-points.nbdev]
+boxrecipe = "boxrecipe._modidx:d"
+
+[tool.setuptools.dynamic]
+version = {attr = "boxrecipe.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["boxrecipe"]
+
+[tool.nbdev]

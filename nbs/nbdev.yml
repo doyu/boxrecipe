@@ -1,0 +1,14 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "boxrecipe"
+  site-url: "/"
+  description: "The doyu-box composition: SERVICES registry, per-service cloud-init fragments, box_recipe()"
+  repo-branch: main
+  repo-url: "https://github.com/doyu/boxrecipe"
+
+format-links:
+  - html
+  - format: commonmark
+    text: Markdown
