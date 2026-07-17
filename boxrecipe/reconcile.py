@@ -33,8 +33,8 @@ WantedBy=multi-user.target
 """
 
 def reconcile_service(
-)->dict:  # validated service dict for the reconcile-web viewer (VPN-gated site + install + unit cmds)
-    """Service dict for reconcile-web: read-only bookkeeping viewer behind the VPN gate."""
+)->dict:  # validated service dict for the reconcile-web viewer (public site + install + unit cmds)
+    """Service dict for reconcile-web: read-only bookkeeping viewer, app-password gated."""
     cmds = [
         "useradd --system --no-create-home --shell /usr/sbin/nologin reconcile",
         "python3 -m venv /opt/reconcile",
@@ -50,6 +50,7 @@ def reconcile_service(
         "systemctl daemon-reload",
         "systemctl enable reconcile",
     ]
+    # public=True: the accountant has no VPN — APP_PASSWORD is the gate
     return check_service({"name": "reconcile", "domain": "reconcile.ninjalabo.ai",
-                          "port": 5001, "public": False,
+                          "port": 5001, "public": True,
                           "packages": ["python3-venv"], "cmds": cmds})
