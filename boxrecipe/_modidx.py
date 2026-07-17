@@ -8,6 +8,8 @@ d = { 'settings': { 'branch': 'main',
   'syms': { 'boxrecipe.box': {'boxrecipe.box.box_recipe': ('box.html#box_recipe', 'boxrecipe/box.py')},
             'boxrecipe.discopipe': { 'boxrecipe.discopipe.discopipe_service': ( 'discopipe.html#discopipe_service',
                                                                                 'boxrecipe/discopipe.py')},
+            'boxrecipe.reconcile': { 'boxrecipe.reconcile.reconcile_service': ( 'reconcile.html#reconcile_service',
+                                                                                'boxrecipe/reconcile.py')},
             'boxrecipe.services': { 'boxrecipe.services.check_service': ('services.html#check_service', 'boxrecipe/services.py'),
                                     'boxrecipe.services.service_site': ('services.html#service_site', 'boxrecipe/services.py'),
                                     'boxrecipe.services.write_file_cmd': ('services.html#write_file_cmd', 'boxrecipe/services.py')}}}
