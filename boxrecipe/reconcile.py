@@ -37,6 +37,10 @@ def reconcile_service(
     """Service dict for reconcile-web: read-only bookkeeping viewer, app-password gated."""
     cmds = [
         "useradd --system --no-create-home --shell /usr/sbin/nologin reconcile",
+        # doyu joins group reconcile: without membership, the kernel silently
+        # clears the setgid bit on rsync's --chmod=D2750 dirs, so pushed files
+        # fall back to group doyu and the service user cannot read the archive
+        "usermod -aG reconcile doyu",
         "python3 -m venv /opt/reconcile",
         "/opt/reconcile/bin/pip install git+https://github.com/doyu/reconcile-web.git",
         # group-read for the service user, nothing for others; X keeps the venv
