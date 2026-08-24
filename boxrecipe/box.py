@@ -12,6 +12,7 @@ from hetznerinit.caddy import caddyfile, caddy_cmds
 from .services import check_service, service_site
 from .discopipe import discopipe_service
 from .reconcile import reconcile_service
+from .habitrack import habitrack_service
 
 def box_recipe(
     services:list,             # service dicts (see boxrecipe.services)
@@ -43,4 +44,4 @@ def box_recipe(
     ))
 
 # %% ../nbs/10_box.ipynb #efbceaab
-SERVICES = [reconcile_service(), discopipe_service()]
+SERVICES = [reconcile_service(), discopipe_service(), habitrack_service()]
